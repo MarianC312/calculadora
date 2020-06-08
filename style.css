@@ -31,3 +31,8 @@ button:hover{
 #clear:hover{
   background-color: #715A5A;
 }
+#history{
+  color: #FFF;
+  padding: 5px;
+  font-size: 12px;
+}
