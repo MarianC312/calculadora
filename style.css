@@ -1,0 +1,33 @@
+#app-display{
+  width: 100vw;
+  height: 100vh;
+}
+button{
+  padding: 15px;
+  background-color: #343440;
+  color: #FFF;
+  min-width: 75px;
+  font-size: 14px;
+}
+button:hover{
+  background-color: gray;
+}
+#display{
+  font-size: 30px;
+  width: 100%;
+  padding: 15px;
+  background-color: #344040;
+  color: #FFF;
+  text-align: right;
+  border: 2px solid rgb(118, 118, 118);
+  border-style: outset;
+  border-color: -internal-light-dark-color(rgb(118, 118, 118), rgb(195, 195, 195));
+  box-sizing:border-box;
+}
+#clear{
+  width: 100%;
+  background-color: #403434;
+}
+#clear:hover{
+  background-color: #715A5A;
+}
