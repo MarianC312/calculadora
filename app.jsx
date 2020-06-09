@@ -111,7 +111,7 @@ class Pad extends React.Component{
           <button id="four" onClick={this.handleClick} value="4">4</button>
           <button id="five" onClick={this.handleClick} value="5">5</button>
           <button id="six" onClick={this.handleClick} value="6">6</button>
-          <button id="substract" onClick={this.handleClick} value="-">-</button>
+          <button id="subtract" onClick={this.handleClick} value="-">-</button>
         </div>
         <div className="d-flex">
           <button id="one" onClick={this.handleClick} value="1">1</button>
