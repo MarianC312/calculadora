@@ -58,8 +58,10 @@ class Pad extends React.Component{
   handleClick(event){
     let value = event.target.value;
     if(isNaN(value)){
-      if(event.target.id == "equals"){
-        
+      if(event.target.id == "decimal"){
+        this.setState({
+          currentDisplay: this.state.currentDisplay + event.target.value
+        })
       }else{
         this.setState({
           currentDisplay: 0,
@@ -74,7 +76,7 @@ class Pad extends React.Component{
         currentVal = this.state.currentDisplay + value;
       }
       this.setState({
-        currentDisplay: currentVal
+        currentDisplay: parseFloat(currentVal)
       })
     }
   }
