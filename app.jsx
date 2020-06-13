@@ -59,6 +59,7 @@ class Pad extends React.Component{
   }
   
   handleClick(event){
+    console.log(this.state.keepSolving);
     let value = event.target.value;
     if(isNaN(value)){
       if(event.target.id == "decimal"){
@@ -72,18 +73,25 @@ class Pad extends React.Component{
           let curResult = this.state.currentDisplay;
           this.resetState();
           this.setState({
-            history: [curResult]
+            history: [curResult, event.target.value]
           })
-        }
-        if(this.state.currentDisplay == 0){
-          this.setState({
-            currentDisplay: event.target.value
-          })
-        }else if(typeof this.state.currentDisplay == "number"){
-        this.setState({
-          currentDisplay: 0,
-          history: [...this.state.history, this.state.currentDisplay, event.target.value]
-        })
+        }else{
+          if(this.state.currentDisplay == 0){
+            if(this.state.history.length > 0 && isNaN(this.state.history[this.state.history.length - 1]) && event.target.id != "subtract"){
+              this.setState({
+                history: [...this.state.history.slice(0,-1), event.target.value]
+              })
+            }else{
+              this.setState({
+                currentDisplay: event.target.value
+              })
+            }
+          }else if(typeof this.state.currentDisplay == "number"){
+            this.setState({
+              currentDisplay: 0,
+              history: [...this.state.history, this.state.currentDisplay, event.target.value]
+            })
+          }
         }
       }
     }else{
