@@ -6,7 +6,8 @@ class Pad extends React.Component{
     this.state = {
       currentDisplay: 0,
       result: 0,
-      history: []
+      history: [],
+      keepSolving: false
     }
     this.handleClick = this.handleClick.bind(this);
     this.resetState = this.resetState.bind(this);
@@ -51,22 +52,39 @@ class Pad extends React.Component{
     }while(flag && h.length > 0);
     this.setState({
       history: [...this.state.history, this.state.currentDisplay],
-      currentDisplay: h.reduce((a, b) => a + b)
-    })
+      currentDisplay: h.reduce((a, b) => a + b),
+      keepSolving: true
+    });
+    
   }
   
   handleClick(event){
     let value = event.target.value;
     if(isNaN(value)){
       if(event.target.id == "decimal"){
-        this.setState({
-          currentDisplay: this.state.currentDisplay + event.target.value
-        })
+        if(Number.isInteger(this.state.currentDisplay) && this.state.currentDisplay[this.state.currentDisplay.length - 1] != "."){
+          this.setState({
+            currentDisplay: this.state.currentDisplay + event.target.value
+          })
+        }
       }else{
+        if(this.state.keepSolving == true){
+          let curResult = this.state.currentDisplay;
+          this.resetState();
+          this.setState({
+            history: [curResult]
+          })
+        }
+        if(this.state.currentDisplay == 0){
+          this.setState({
+            currentDisplay: event.target.value
+          })
+        }else if(typeof this.state.currentDisplay == "number"){
         this.setState({
           currentDisplay: 0,
           history: [...this.state.history, this.state.currentDisplay, event.target.value]
         })
+        }
       }
     }else{
       let currentVal;
@@ -84,7 +102,8 @@ class Pad extends React.Component{
   resetState(){
     this.setState({
       currentDisplay: 0,
-      history: []
+      history: [],
+      keepSolving: false
     })
   }
   
