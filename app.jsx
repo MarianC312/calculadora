@@ -17,7 +17,6 @@ class Pad extends React.Component{
   handleResult(){
     let h = this.state.history.slice(), flag = false;
     do{
-      console.log(h);
       if(h.indexOf("*") || h.indexOf("/")){
         h.map((data,i) => {
           let fVal = h[i - 1], lVal = (i === (h.length - 1)) ? this.state.currentDisplay : h[i + 1];
@@ -32,10 +31,8 @@ class Pad extends React.Component{
       }else{
         flag = false;
       }
-      console.log(h);
     }while(flag && h.length > 0);
     do{
-      console.log(h);
       if(h.indexOf("+") || h.indexOf("-")){
         h.map((data,i) => {
           let fVal = h[i - 1], lVal = (i === (h.length - 1)) ? this.state.currentDisplay : h[i + 1];
@@ -48,22 +45,21 @@ class Pad extends React.Component{
       }else{
         flag = false;
       }
-      console.log(h);
     }while(flag && h.length > 0);
     this.setState({
       history: [...this.state.history, this.state.currentDisplay],
-      currentDisplay: h.reduce((a, b) => a + b),
+      currentDisplay: parseFloat(h.reduce((a, b) => a + b)),
       keepSolving: true
     });
     
   }
   
   handleClick(event){
-    console.log(this.state.keepSolving);
     let value = event.target.value;
     if(isNaN(value)){
       if(event.target.id == "decimal"){
-        if(Number.isInteger(this.state.currentDisplay) && this.state.currentDisplay[this.state.currentDisplay.length - 1] != "."){
+        let currentDisplay = this.state.currentDisplay.split("");
+        if(currentDisplay.indexOf(".") == -1){
           this.setState({
             currentDisplay: this.state.currentDisplay + event.target.value
           })
@@ -76,9 +72,10 @@ class Pad extends React.Component{
             history: [curResult, event.target.value]
           })
         }else{
-          if(this.state.currentDisplay == 0){
+          if(this.state.currentDisplay == 0 || isNaN(this.state.currentDisplay)){
             if(this.state.history.length > 0 && isNaN(this.state.history[this.state.history.length - 1]) && event.target.id != "subtract"){
               this.setState({
+                currentDisplay: event.target.value,
                 history: [...this.state.history.slice(0,-1), event.target.value]
               })
             }else{
@@ -86,7 +83,7 @@ class Pad extends React.Component{
                 currentDisplay: event.target.value
               })
             }
-          }else if(typeof this.state.currentDisplay == "number"){
+          }else{
             this.setState({
               currentDisplay: 0,
               history: [...this.state.history, this.state.currentDisplay, event.target.value]
@@ -96,13 +93,13 @@ class Pad extends React.Component{
       }
     }else{
       let currentVal;
-      if(this.state.currentDisplay == 0){
+      if(this.state.currentDisplay === 0 || this.state.currentDisplay === "0"){
         currentVal = value;
       }else{
         currentVal = this.state.currentDisplay + value;
       }
       this.setState({
-        currentDisplay: parseFloat(currentVal)
+        currentDisplay: currentVal
       })
     }
   }
@@ -119,13 +116,15 @@ class Pad extends React.Component{
     //console.log(this.state.history);
     return(
       <div className="bg-dark p-2">
-        <div id="history">
-          {
-            this.state.history.map((n) => n + " ")
-          }
-        </div>
         <div>
-          <div id="display">{this.state.currentDisplay}</div>
+          <div>
+            <div id="history">
+              {
+                this.state.history.map((n) => n + " ")
+              }
+            </div>
+            <div id="display">{this.state.currentDisplay}</div>
+          </div>
         </div>
         <div>
           <button id="clear" onClick={this.resetState}>C</button>
